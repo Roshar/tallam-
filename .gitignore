@@ -1,3 +1,5 @@
 .env
 some.txt
 /node_modules
+/files
+
