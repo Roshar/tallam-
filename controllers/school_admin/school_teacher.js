@@ -43,6 +43,7 @@ exports.getProfileByTeacherId = async (req, res) => {
             const month = ['января', 'февраля','марта', 'апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
             const y =  teacher[0].birthday.getFullYear();
             const birthdayShort = `${d}  ${month[m]} ${y}`;
+            const discipline = await SchoolTeacher.disciplineListByTeacherId(req.params);
 
 
             const support_type = await SchoolCabinet.getSupportType()
@@ -58,6 +59,7 @@ exports.getProfileByTeacherId = async (req, res) => {
                 birthdayShort,
                 school_name,
                 kpk,
+                discipline,
                 title_area,
                 issetInProjects,
                 support_type,

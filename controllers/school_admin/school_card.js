@@ -556,7 +556,9 @@ exports.getSingleCardById = async (req, res) => {
 
                     worksheet.addRows(jsonsingleCard);
 
-                    let excelFileName = teacher[0].surname + '-' + Date.now();
+                    let dt = new Date();
+                    let dtName =  dt.getDate() + '-' + dt.getMonth()+1 +'-'+dt.getFullYear();
+                    let excelFileName = teacher[0].surname + '-' + dtName;
 
                     await workbook.xlsx.writeFile(`files/excels/schools/tmp/${excelFileName}.xlsx`);
 
