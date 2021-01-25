@@ -240,9 +240,19 @@ exports.getTeacherByIdForEdit = async (req, res) => {
 
             const support_type = await SchoolCabinet.getSupportType()
             const school_name = await school[0].school_name;
+            const currentDiscipline = await SchoolTeacher.disciplineListByTeacherId2(req.params)
+            const disciplines = await SchoolTeacher.getdisciplinesList()
 
 
+            const ddata = disciplines.filter(({ title_discipline: id1 }) => !currentDiscipline.some(({ title_discipline: id2 }) => id2 === id1));
+
+            console.log(ddata);
+             
+
+    
             if(req.body.school_id && req.body._csrf) {
+                // console.log(req.body);
+                // return ;
                 const result  = await SchoolTeacher.updateTeacherMainInformationById(req.body)
                 if(result) {
                 const id_teacher = await req.body.id_teacher;
@@ -262,10 +272,13 @@ exports.getTeacherByIdForEdit = async (req, res) => {
                 teacher_id,
                 teacher,
                 birthdayConverter,
+                ddata,
                 school_name,
                 kpk,
                 edu,
                 gender,
+                currentDiscipline,
+                disciplines,
                 category,
                 position,
                 issetInProjects,

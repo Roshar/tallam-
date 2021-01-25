@@ -1,3 +1,106 @@
+<style>
+    
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 9999; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  position: relative;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.lists-dis{
+    display: flex;
+    vertical-align:top;
+    justify-content: space-around;
+    margin:60px 0;
+    align-items:flex-start;
+}
+.lists-dis h2{
+    text-align: center;
+}
+.lists-dis__first-block,
+.lists-dis__second-block {
+    width: 40%;
+}
+
+.lists-dis__first-block ul,
+.lists-dis__second-block ul {
+    border: 1px solid #487bb7;
+    min-height: 160px;
+    padding:10px;
+}
+
+.save-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.save-input_notice {
+    display: none;
+    position: absolute;
+    justify-content: center;
+    margin: 20px 0;
+    width:100%;
+    
+    
+}
+
+.hidden-block {
+    display: none;
+}
+
+.add_dis{
+    padding:13px;
+    background-color: tomato;
+    color: whitesmoke;
+}
+
+.add_dis:hover{
+    background-color:#f25a3f;
+}
+.li-dis{
+    color: darkred;
+    margin-top:10px;
+    padding-left: 10px;
+}
+
+
+
+</style>
 <header class="header">
 <div class="header_top">
     <div class="logo">
@@ -20,6 +123,51 @@
     </nav>
 </div>
 </header>
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+        <div class="save-input_notice" id="save-input_notice">
+            <div style="color: white; background-color:darkgreen; width:80%;   margin: 0 auto;padding:10px; text-align:center"> Изменения сохранены </div>
+        </div>
+        <div class="lists-dis">
+            <div class="lists-dis__first-block" id="bk1">     
+                <h2>Общий список дисциплин</h2>   
+                <section class="list_section">
+                    <ul class="teachers_list" id="mainDis">
+                        {{#if ddata}}
+                            {{#each ddata}}
+                                <li data-id-md = "{{id_discipline}}" class="teachers_list__item"> {{title_discipline}}  </li>
+                            {{/each}}
+                        {{else}}
+                            Пусто
+                        {{/if}}
+                    </ul>
+                </section>  
+            </div>
+
+            <div class="lists-dis__second-block" id="bk2"> 
+                <h2>Список преподаваемых дисциплин </h2>   
+                <section class="list_section">
+                    <ul class="teachers_list" id="currentD">
+                        {{#if currentDiscipline}}
+                            {{#each currentDiscipline}}   
+                                <li data-id-md = "{{id_discipline}}" class="teachers_list__item"> {{title_discipline}} </li>
+                            {{/each}}
+                        {{else}}
+                           
+                        {{/if}}
+                    </ul>
+                </section>
+            </div>
+        </div>
+        <div class="save-input">
+            <button type="button"  id="add_dis" class="add_dis">Сохранить изменения</button>
+        </div>
+  </div>
+</div>
+
 <main>   
     <section>
         {{#if notice}}
@@ -89,6 +237,26 @@
 
             <label class="message" for="position">Выберите должность</label>
             <label class="message" for="disciplines">message</label>
+
+      <label><a id="myBtn" href="#">Преподаваемые дисциплины (изменить список)</a> </label>
+      
+            <select class="js-example-basic-multiple" name="disciplines[]" multiple="multiple" id="ddata-s" style="display:none">
+                {{#if ../currentDiscipline}}
+                    {{#each ../currentDiscipline}}
+                        <option selected value="{{id_discipline}}"></option>
+                    {{/each}}
+                {{else}} 
+                {{/if}}
+            </select>
+             <ul id="ddata">  
+                {{#each ../currentDiscipline}}
+                    <li class="li-dis">{{title_discipline}}</li>
+                {{/each}}  
+            </ul>
+            <hr>
+             
+         
+
             <label  for="total_experience">Общий стаж</label>
             <input type="text" placeholder="Общий стаж" value="{{total_experience}}" name="total_experience">
             <label for="teaching_experience">Педагогический стаж</label>
@@ -113,6 +281,23 @@
 
             <input type="email" value="{{email}}" name="email">
             <label class="message" for="email">Адрес почты должен быть верного формата: example@mail.ru</label>
+
+            <div class="qualification_section">
+                <div class="qualification_section__block">
+                    
+                    {{#each ../kpk}}
+                    <input type="text" value="{{place_training}}" placeholder="Место, программа (тема) последнего прохождения КПК" name="place_kpk">
+                    <label class="message" for="place">message</label>
+            
+                    <label>Год
+
+                        <input type="text"  name="year_kpk" value="{{year_training}}">
+
+                    </label>
+                    {{/each}}
+                    <label class="message" for="year">message</label>
+                </div>
+            </div>
             <input type="hidden" name="id_teacher" value="{{id_teacher}}">
             <input type="hidden" name="school_id" value="{{ ../school_id }}">
             <input type="hidden" name="_csrf" value="{{@root.csrf}}" id="token">
@@ -121,3 +306,107 @@
             {{/each}}
         </form>
 </main>
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+    let items = document.querySelectorAll('.teachers_list__item');
+    let leftC = document.getElementById('#mainDis');
+    let rightC = document.getElementById('#currentD');
+    for (let i = 0; i < items.length; i++) {
+        items[i].addEventListener('click', (e) => {
+            if(e.target.parentNode.id == "mainDis"){
+                $('#currentD').append(e.target)	
+            }else{
+                $('#mainDis').append(e.target)
+            }
+        })  
+    }
+    let save = $('#add_dis');
+    var modal = document.getElementById("myModal");
+    save.on('click',event=>{
+        event.preventDefault;
+        $('#ddata').empty(); 
+        $('#ddata-s').empty(); 
+        let list = $('#currentD li');
+        for(let l = 0; l < list.length; l++){
+            let idDiscipline = $(list[l]).attr("data-id-md");
+            let nameDiscipline = $(list[l]).text();
+
+            $('#ddata-s').append($('<option>', {
+                value: idDiscipline,
+                selected: 'selected'
+            }))
+
+            $('#ddata').append($('<li>',{
+                text:nameDiscipline,
+                class: 'li-dis'
+                }))
+            
+        }
+         $('#save-input_notice').show().delay(1000).fadeOut()
+            setTimeout(function() { 
+               modal.style.display = "none";
+            }, 1500);
+    })
+})
+
+let modal = document.getElementById("myModal");
+let btn = document.getElementById("myBtn");
+let span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function(e) {
+  e.preventDefault;
+  modal.style.display = "block";
+}
+$(document).keyup(function(e) {
+     if (e.key === "Escape") { 
+         modal.style.display = "none";
+    }
+});
+
+span.onclick = function() {
+
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+
+
+let form = document.querySelector('.add_form');
+form.addEventListener('submit', event => {
+    validateSelections()
+    if(!isValid || validSelections < 3) { 
+        let activeElement = document.activeElement;
+        activeElement.scrollIntoView({behavior: 'smooth', block: 'center'});
+        event.preventDefault();
+        return false;
+    }
+})
+
+
+
+
+let dateInput = document.querySelector("input[type='date']");
+
+let isMouseDown = false; // в примере будет работать только для 1ой кнопки
+dateInput.addEventListener('click', () => {
+    isMouseDown = true
+    
+    if(!isMouseDown){
+    dateInput.blur();
+    }
+})
+
+$( document ).ready(function() {
+    if($("#notice")){
+        $(".flash").fadeIn(.5).fadeOut(4000)
+    }
+});
+</script>
