@@ -796,7 +796,7 @@ exports.getSingleCardById = async (req, res) => {
                                         }),
                             new Paragraph({
                                 children: [
-                                            new TextRun(k_1_1_rec[0].content)]
+                                            new TextRun(k_2_1_rec[0].content)]
                                         }),
                             new Paragraph({
                                 children: [
