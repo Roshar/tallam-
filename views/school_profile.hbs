@@ -473,7 +473,7 @@ main .add_form input, main .add_form select {
 
         let form = document.querySelector('.add_form');
         form.addEventListener('click', event => {
-            event.preventDefault();
+            event.currentTarget.preventDefault();
         })
 
 
