@@ -472,15 +472,8 @@ main .add_form input, main .add_form select {
         setYears();
 
         let form = document.querySelector('.add_form');
-        form.addEventListener('submit', event => {
-            validateSelections()
-            if(!isValid || validSelections < 3) { 
-                let activeElement = document.activeElement;
-                activeElement.scrollIntoView({behavior: 'smooth', block: 'center'});
-
-                event.preventDefault();
-                return false;
-            }
+        form.addEventListener('click', event => {
+            event.preventDefault();
         })
 
        
