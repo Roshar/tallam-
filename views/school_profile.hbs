@@ -262,7 +262,7 @@ main .add_form input, main .add_form select {
 
             <label>СНИЛС <span class="star">*</span></label>
             <input type="text" placeholder="000 000 000 00 (11-значное число)" name="snils" required>
-            <label class="message" for="snils">Введите только 12 цифр</label>
+            <label class="message" for="snils">Необходимо ввести только цифры без пробелов и тире (максимальное количество 12 цифр)</label>
 
             <label>Пол <span class="star">*</span>
                 <select name="gender" required>
@@ -502,6 +502,126 @@ main .add_form input, main .add_form select {
                 $(".flash").fadeIn(.5).fadeOut(4000)
             }
         });
+
+
+
+
+
+
+        const patterns = { 
+            surname: /^[а-яёА-ЯЁ]{1,}$/u,
+            firstname: /^[а-яёА-ЯЁ]{1,}$/u,
+            patronymic: /^[а-яёА-ЯЁ]+$/u,
+            birthday: /^((?:19|20)\d{2})-(1[012]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$/,
+            snils: /^\d{11}$/,
+            
+            diploma: /^\d{6,}$/,
+
+            /* total_experience: /^\d{1,2}$/,
+            teaching_experience: /^\d{1,2}$/, */
+
+            phone: /^\+7 \(\d{3}\) \d{3} \d{2} \d{2}$/,
+            email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/
+        }
+
+
+        let inputs = document.querySelectorAll('input');
+        let isValid = false;
+
+        inputs.forEach((input) => {
+            input.addEventListener('keyup', e => {
+                validate(e.target, patterns[e.target.attributes.name.value]);
+            })
+        });
+
+        let requiredFields = document.querySelectorAll('[required]');
+        requiredFields.forEach(field => {
+            let fieldName = field.attributes.name.value;
+            let label = document.querySelector(`label[for='${fieldName}']`);
+            const labelValue = label.innerHTML; 
+
+            field.addEventListener('keyup', (e) => {
+                if(!e.target.value || e.target.value === null || e.target.value === undefined){
+                    label.innerHTML = 'Поле обязательно для заполнения';
+                }
+                else{
+                    label.innerHTML = labelValue;
+                }
+            })
+        });
+
+        function validate(field, regex){
+            if(regex.test(field.value) || 
+              (!field.attributes.required && 
+              (!field.value || field.value === null || field.value === undefined))){
+                field.className = 'valid';
+                isValid = true;
+            }else{
+                field.className = 'invalid';
+                isValid = false;
+            }
+        };
+
+
+        let validSelections = 0;
+        function validateSelections(){
+            let selects = document.querySelectorAll('select[required]');
+            selects.forEach(select => {
+                select.addEventListener('change', () => {
+                    if(select.value){
+                        validSelections++;
+                    }else
+                        validSelections--;
+                })
+            });
+        };
+
+        validateSelections();
+
+        let disciplines = document.querySelector("select[name='disciplines']");
+        let  selectedDisciplinesList = document.querySelector('.selected_disciplines');
+        disciplines.addEventListener('change', event => {
+            let value = event.target.value;
+            let exist = false;
+            let li;
+            let selectedDisciplines = document.querySelectorAll('.selected_disciplines li');
+
+            for(let i = 0; i < selectedDisciplines.length; i++){
+                if(selectedDisciplines[i].querySelector('p').innerText === value){
+                    exist = true;
+                }
+            }
+
+            if(!exist && value !== ''){
+                let input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'discipline';
+                input.value = value;
+                selectedDisciplinesList.before(input);
+
+                li = document.createElement('li');
+                li.className = 'discipline';
+                let p = document.createElement('p');
+                p.style.display = 'inline-block';
+                p.innerHTML = value;
+                li.append(p);
+
+                let span = document.createElement('span');
+                span.className = 'cross';
+                span.innerHTML = 'x';
+                span.addEventListener('click', event => {
+                    document.querySelector(`input[value="${event.target.previousElementSibling.innerText}"]`).remove();
+                    event.target.closest('li').remove();
+                    if(!selectedDisciplines.length){
+                        disciplines.value = '';
+                    }
+                })
+
+                li.append(span);
+                selectedDisciplinesList.append(li);
+            }
+        });
+
     </script>
    
 
