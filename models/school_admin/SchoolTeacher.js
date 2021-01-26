@@ -291,7 +291,7 @@ exports.getPositionList = async () => {
        
       })
 
-      const [res, fields] = await dbh.execute('SELECT * FROM position')
+      const [res, fields] = await dbh.execute('SELECT * FROM position ORDER BY title_position')
 
       dbh.end()
       return res;
@@ -318,7 +318,7 @@ exports.getdisciplinesList = async () => {
        
       })
 
-      const [res, fields] = await dbh.execute('SELECT * FROM discipline_title')
+      const [res, fields] = await dbh.execute('SELECT * FROM discipline_title ORDER BY title_discipline')
 
       dbh.end()
       return res;
