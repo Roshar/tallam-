@@ -136,7 +136,7 @@
                     <form method="POST" class="secondary_form">
                         <input type="hidden" name="excel_tbl" value="{{@root.csrf}}" id="excel_tbl">
                         <input type="hidden" name="_csrf" value="{{@root.csrf}}" id="token">
-                        <button type="submit" class="card-btn">Подготовить для печати </button>
+                        <button type="button" class="card-btn" onClick="window.print()">Подготовить для печати </button>
                     </form>
                  </div>
                 <div class="list-func__child email-btn"> <a  class="card-btn" href="/school/card/api/send/{{../teacher_id}}/{{id_card}}">Отправить на электронный адрес учителя</a> </div>
