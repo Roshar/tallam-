@@ -650,7 +650,7 @@ exports.updateTeacherMainInformationById  = async (req, res) =>{
       email,
       id_teacher])
 
-   console.log(req)
+      console.log(req)
       const [result3 , fields3] =  await dbh.execute('UPDATE `training_kpk` SET year_training = ?, place_training = ? WHERE teacher_id = ?',
       [year_kpk,  place_kpk, id_teacher])
 
@@ -659,20 +659,20 @@ exports.updateTeacherMainInformationById  = async (req, res) =>{
          const [result4, fields4] = await dbh.execute('DELETE FROM `discipline_middleware` WHERE teacher_id = ?',
          [id_teacher])
       }else{
-         if(disciplines_id.length > 0){
-            const de = "DELETE FROM `discipline_middleware` WHERE teacher_id = "+`${id_teacher}`;
-            // console.log(de)
-            // const ressd = await dbh.query("DELETE FROM `discipline_middleware` WHERE teacher_id = "+`${id_teacher}`);
-            const [result4, fields4] = await dbh.execute('DELETE FROM `discipline_middleware` WHERE teacher_id = ?',
+         if(typeof disciplines_id == 'string'){
+            const [result5, fields5] = await dbh.execute('DELETE FROM `discipline_middleware` WHERE teacher_id = ?',
             [id_teacher])
+            const [result6, fields6] =  await dbh.execute('INSERT INTO discipline_middleware ( teacher_id,	discipline_id) VALUES (?,?)',
+            [id_teacher, disciplines_id])
+         }else if(typeof disciplines_id == 'object'){
+            const [result7, fields7] = await dbh.execute('DELETE FROM `discipline_middleware` WHERE teacher_id = ?',
+            [id_teacher])
+            for (let i = 0; i < disciplines_id.length; i++) {
+               const [result8, fields8] =  await dbh.execute('INSERT INTO discipline_middleware ( teacher_id,	discipline_id) VALUES (?,?)',
+               [id_teacher, disciplines_id[i]])
+            }
          }
-         
-         for (let i = 0; i < disciplines_id.length; i++) {
-            console.log(disciplines_id[i]);
-            const [result4, fields4] =  await dbh.execute('INSERT INTO discipline_middleware ( teacher_id,	discipline_id) VALUES (?,?)',
-            [id_teacher, disciplines_id[i]])
-         }
-      }
+      }  
          
       dbh.end()
       return result;
