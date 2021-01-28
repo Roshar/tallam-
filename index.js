@@ -106,7 +106,7 @@ const hbs = exphbs.create({
             if(n == 1) {
                 return 'Внешняя'
             }else if(n == 2) {
-                return 'Внтуришкольная'
+                return 'Внутришкольная'
             }
         }
       
