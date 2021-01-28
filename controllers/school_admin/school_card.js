@@ -67,7 +67,7 @@ exports.getCardPageByTeacherId = async (req, res) => {
 
                     for(let i = 0; i < card.length; i++) {
                         card[i].sum = card[i].k_1_1 + card[i].k_1_2 + card[i].k_1_3 +
-                        card[i].k_2_1 + card[i].k_2_2 + card[i].k_3_1 + card[i].k_4_1 + card[i].k_5_1 + card[i].k_5_2;
+                        card[i].k_2_1 + card[i].k_2_2 + card[i].k_3_1 + card[i].k_4_1 + card[i].k_5_1 + card[i].k_5_2 + card[i].k_6_1;
                         card[i].interest = card[i].sum * 100 / 20;
      
                          if(card[i].interest > 84) {
@@ -110,7 +110,7 @@ exports.getCardPageByTeacherId = async (req, res) => {
 
                 for(let i = 0; i < card.length; i++) {
                    card[i].sum = card[i].k_1_1 + card[i].k_1_2 + card[i].k_1_3 +
-                   card[i].k_2_1 + card[i].k_2_2 + card[i].k_3_1 + card[i].k_4_1 + card[i].k_5_1 + card[i].k_5_2;
+                   card[i].k_2_1 + card[i].k_2_2 + card[i].k_3_1 + card[i].k_4_1 + card[i].k_5_1 + card[i].k_5_2 + card[i].k_6_1;
                    card[i].interest = card[i].sum * 100 / 20;
 
                     if(card[i].interest > 84) {
