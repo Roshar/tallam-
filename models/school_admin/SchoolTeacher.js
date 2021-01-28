@@ -654,33 +654,24 @@ exports.updateTeacherMainInformationById  = async (req, res) =>{
       const [result3 , fields3] =  await dbh.execute('UPDATE `training_kpk` SET year_training = ?, place_training = ? WHERE teacher_id = ?',
       [year_kpk,  place_kpk, id_teacher])
 
-      if(disciplines_id.length > 0){
+      if(typeof disciplines_id == "undefined"){  
          const de = "DELETE FROM `discipline_middleware` WHERE teacher_id = "+`${id_teacher}`;
-         console.log(de)
-         // const ressd = await dbh.query("DELETE FROM `discipline_middleware` WHERE teacher_id = "+`${id_teacher}`);
          const [result4, fields4] = await dbh.execute('DELETE FROM `discipline_middleware` WHERE teacher_id = ?',
          [id_teacher])
-      }
-      
-      for (let i = 0; i < disciplines_id.length; i++) {
-         console.log(disciplines_id[i]);
-         const [result4, fields4] =  await dbh.execute('INSERT INTO discipline_middleware ( teacher_id,	discipline_id) VALUES (?,?)',
-         [id_teacher, disciplines_id[i]])
-
-         // const qu = "INSERT INTO `discipline_middleware` (`teacher_id`, `discipline_id`) "+
-         // "SELECT * FROM (SELECT "+"'"+ id_teacher +"'"+","+ disciplines_id[i]+ " ) AS tmp "+
-         // " WHERE NOT EXISTS ( "+
-         //    " SELECT `teacher_id`, `discipline_id` FROM `discipline_middleware` "+
-         //    " WHERE `teacher_id` = " +"'"+ id_teacher +"'"+ "  AND `discipline_id` ="+ disciplines_id[i] +
-         // " ) LIMIT 1;"
-         // console.log(qu)
-         // const ress = await dbh.query("INSERT INTO `discipline_middleware` (`teacher_id`, `discipline_id`) "+
-         // "SELECT * FROM (SELECT "+"'"+ id_teacher +"'"+ ","+ disciplines_id[i]+ " ) AS tmp "+
-         // " WHERE NOT EXISTS ( "+
-         //    " SELECT `teacher_id`, `discipline_id` FROM `discipline_middleware` "+
-         //    " WHERE `teacher_id` = " +"'"+ id_teacher +"'"+ "  AND `discipline_id` ="+ disciplines_id[i] +
-         // " ) LIMIT 1;");
-
+      }else{
+         if(disciplines_id.length > 0){
+            const de = "DELETE FROM `discipline_middleware` WHERE teacher_id = "+`${id_teacher}`;
+            // console.log(de)
+            // const ressd = await dbh.query("DELETE FROM `discipline_middleware` WHERE teacher_id = "+`${id_teacher}`);
+            const [result4, fields4] = await dbh.execute('DELETE FROM `discipline_middleware` WHERE teacher_id = ?',
+            [id_teacher])
+         }
+         
+         for (let i = 0; i < disciplines_id.length; i++) {
+            console.log(disciplines_id[i]);
+            const [result4, fields4] =  await dbh.execute('INSERT INTO discipline_middleware ( teacher_id,	discipline_id) VALUES (?,?)',
+            [id_teacher, disciplines_id[i]])
+         }
       }
          
       dbh.end()
