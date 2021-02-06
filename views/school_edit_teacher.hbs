@@ -284,7 +284,8 @@
 
             <div class="qualification_section">
                 <div class="qualification_section__block">
-                    
+                    <h2 class="add_form__heading">Курсы повышения квалификации</h2>
+                    {{#if ../kpk}}
                     {{#each ../kpk}}
                     <input type="text" value="{{place_training}}" placeholder="Место, программа (тема) последнего прохождения КПК" name="place_kpk">
                     <label class="message" for="place">message</label>
@@ -295,6 +296,21 @@
 
                     </label>
                     {{/each}}
+                    {{else}}
+                    <input type="text" placeholder="Место, программа (тема) последнего прохождения КПК" name="place_kpk">
+                    <label class="message" for="place">message</label>
+                    
+                    <label>Год
+                        <select name="year" >
+                            <option value="" selected>-</option>
+                            <option value="punkt1"></option>
+                            <option value="punkt2"></option>
+                            <option value="punkt3"></option>
+                            <option value="punkt3"></option>
+                            <option value="punkt3"></option>
+                        </select>
+                    </label>
+                    {{/if}}
                     <label class="message" for="year">message</label>
                 </div>
             </div>
@@ -409,4 +425,16 @@ $( document ).ready(function() {
         $(".flash").fadeIn(.5).fadeOut(4000)
     }
 });
+
+ let years = document.querySelectorAll("select[name='year'] > option");
+        function setYears(){
+            let year = new Date().getFullYear();
+
+            for(let i = 1; i < 6; i++){
+                years[i].value = year - i+1;
+                years[i].innerHTML = year - i+1;
+            }
+        }
+ 
+        setYears();
 </script>

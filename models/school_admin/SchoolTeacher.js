@@ -651,9 +651,15 @@ exports.updateTeacherMainInformationById  = async (req, res) =>{
       email,
       id_teacher])
 
-      console.log(req)
-      const [result3 , fields3] =  await dbh.execute('UPDATE `training_kpk` SET year_training = ?, place_training = ? WHERE teacher_id = ?',
-      [year_kpk,  place_kpk, id_teacher])
+      const [resultk, fieldsk] = await dbh.execute('SELECT * FROM training_kpk WHERE teacher_id = ?', [id_teacher])
+
+      if(!resultk.length){
+         const [result5 , fields5] =  await dbh.execute('INSERT INTO training_kpk (year_training, place_training, teacher_id) VALUES (?,?,?)',
+            [year_kpk,  place_kpk, id_teacher])
+      }else{
+         const [result3 , fields3] =  await dbh.execute('UPDATE `training_kpk` SET year_training = ?, place_training = ? WHERE teacher_id = ?',
+         [year_kpk,  place_kpk, id_teacher])
+      }
 
       if(typeof disciplines_id == "undefined"){  
          const de = "DELETE FROM `discipline_middleware` WHERE teacher_id = "+`${id_teacher}`;
