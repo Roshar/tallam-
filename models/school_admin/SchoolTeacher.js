@@ -522,8 +522,8 @@ exports.addNewTeacher = async (req, res) => {
       const level_of_education_id = await req.level_of_education_id;
       const diploma = await req.diploma;
       const position = await req.position;
-      const total_experience = await req.total_experience;
-      const teaching_experience = await req.teaching_experience;
+      const total_experience = await req.total_experience || 1;
+      const teaching_experience = await req.teaching_experience || 1;
       const category = await req.category;
       const phone = await req.phone;
       const email = await req.email;
@@ -566,12 +566,13 @@ exports.addNewTeacher = async (req, res) => {
             const [result3, fields3] = 
             await dbh.execute('INSERT INTO teachers (id_teacher, surname, firstname, patronymic, birthday, snils, gender_id, specialty, level_of_education_id, diploma, position, total_experience, teaching_experience, category_id, phone,	email, school_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
             [id_teacher, surname,firstname, patronymic, birthday, snils, gender_id, specialty,level_of_education_id, diploma, position, total_experience, teaching_experience, category, phone,	email, school_id ])
-
-            for (let i = 0; i < disciplines_id.length; i++) {
-               const [result4, fields4] =  await dbh.execute('INSERT INTO discipline_middleware ( teacher_id,	discipline_id) VALUES (?,?)',
-               [id_teacher, disciplines_id[i]])
+            
+            if(typeof disciplines_id !== 'undefined'){
+               for (let i = 0; i < disciplines_id.length; i++) {
+                  const [result4, fields4] =  await dbh.execute('INSERT INTO discipline_middleware ( teacher_id,	discipline_id) VALUES (?,?)',
+                  [id_teacher, disciplines_id[i]])
+               }
             }
-
             const [result5 , fields5] =  await dbh.execute('INSERT INTO training_kpk (year_training, place_training, teacher_id) VALUES (?,?,?)',
             [year_kpk,  place_kpk, id_teacher])
 
