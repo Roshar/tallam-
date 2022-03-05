@@ -51,7 +51,6 @@ exports.getAllKpkByIdTeacher = async(req, res) => {
     try {
        const dbh = await mysql.createConnection({
           host: process.env.DATABASE_HOST,
-          
           user: process.env.DATABASE_USER,
           database: process.env.DATABASE,
           password: process.env.DATABASE_PASSWORD,
@@ -510,6 +509,9 @@ exports.addNewTeacher = async (req, res) => {
        
       })
 
+      // console.log(req)
+
+      console.log('SchoolTeacher')
       /** sql for teachers table */
       const id_teacher = await req.id_teacher;
       const surname = await req.surname;
@@ -569,7 +571,7 @@ exports.addNewTeacher = async (req, res) => {
             
             if(typeof disciplines_id !== 'undefined'){
                for (let i = 0; i < disciplines_id.length; i++) {
-                  const [result4, fields4] =  await dbh.execute('INSERT INTO discipline_middleware ( teacher_id,	discipline_id) VALUES (?,?)',
+                  const [result4, fields4] =  await dbh.execute('INSERT INTO discipline_middleware ( teacher_id, discipline_id) VALUES (?,?)',
                   [id_teacher, disciplines_id[i]])
                }
             }
@@ -580,7 +582,7 @@ exports.addNewTeacher = async (req, res) => {
       return result3.insertId;
       
    }catch(e) {
-      console.log(e.message)
+      console.log(e)
    }
 }
 
@@ -737,7 +739,7 @@ exports.updateTeacherAvatar  = async (req, res) =>{
    try{
       const dbh = await mysql.createConnection({
          host: process.env.DATABASE_HOST,
-         
+
          user: process.env.DATABASE_USER,
          database: process.env.DATABASE,
          password: process.env.DATABASE_PASSWORD,
@@ -747,7 +749,7 @@ exports.updateTeacherAvatar  = async (req, res) =>{
       const teacher_id = await req.teacher_id;
       const school_id = await req.school_id;
 
-      const [projectе, fields1] = await dbh.execute("SELECT * FROM project_middleware_names"); 
+      const [projectе, fields1] = await dbh.execute("SELECT * FROM project_middleware_names");
 
       const name_table_project = [];
 
@@ -758,7 +760,7 @@ exports.updateTeacherAvatar  = async (req, res) =>{
       if(!teacher_id ||  !school_id) {
          throw new Error('Неверне параментры! Какой то из параментров отсутствует!')
       }else {
-         const [result, fields] = 
+         const [result, fields] =
          await dbh.execute('DELETE FROM `teachers` WHERE id_teacher = ?',
          [teacher_id])
 
@@ -777,7 +779,7 @@ exports.updateTeacherAvatar  = async (req, res) =>{
 
          dbh.end()
          return result;
-      }   
+      }
       
    }catch(e) {
       console.log(e.message)

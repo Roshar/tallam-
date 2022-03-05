@@ -87,12 +87,12 @@ exports.getProfileByTeacherId = async (req, res) => {
 
 
 
-/** GET TEACHERS FROM CURRENT SCHOOL  */
+/** ПОЛУЧИТЬ ВСЕХ УЧИТЕЛЕЙ и ДОБАВИТЬ НОВОГО УЧИТЕЛЯ  */
 
 exports.getSchoolTeachers = async (req, res) => {
 
     try{
-        
+
         if(req.session.user) {
 
             const projects = await SchoolProject.getAllProjectsWithThisSchool(req.session.user)
@@ -116,7 +116,7 @@ exports.getSchoolTeachers = async (req, res) => {
                 const firstname = await req.body.firstname.trim();
                 const patronymic = await req.body.patronymic.trim();
                 const birthday = await req.body.birthday;
-                const snils = await parseInt(req.body.snils);
+                const snils = await req.body.snils || '';
                 const gender_id = await parseInt(req.body.gender);
                 const specialty = await req.body.specialty.trim();
                 const level_of_education_id = await parseInt(req.body.level_of_education) || 1;
@@ -209,11 +209,13 @@ exports.getSchoolTeachers = async (req, res) => {
 /** END BLOCK */
 
 
-/** GENERATION FORM FOR EDIT MAIN INFORMATION ABOUT TEACHER */
+/** GENERATION FORM FOR EDIT MAIN INFORMATION ABOUT TEACHER
+ *  Форма редактирования
+ * Личный кабинет школы*/
 
 exports.getTeacherByIdForEdit = async (req, res) => {
     try{
-      
+
         if(req.session.user) {
 
             const teacher = await SchoolTeacher.getProfileByTeacherId(req.params)
@@ -245,9 +247,6 @@ exports.getTeacherByIdForEdit = async (req, res) => {
 
 
             const ddata = disciplines.filter(({ title_discipline: id1 }) => !currentDiscipline.some(({ title_discipline: id2 }) => id2 === id1));
-
-            console.log(ddata);
-             
 
     
             if(req.body.school_id && req.body._csrf) {

@@ -48,6 +48,23 @@ const hbs = exphbs.create({
     extname: 'hbs',
 
     helpers: {
+
+        // get status
+        setStatus: (status) => {
+          if(status === 'on') {
+              return 'off'
+          }  else  {
+              return 'on'
+          }
+        },
+        setStatusTitle: (status) => {
+            if(status === 'on') {
+                return 'Заблокировать'
+            }  else  {
+                return 'Разблокировать'
+            }
+        },
+
         // add number for list
         increment: (index) => {
             return parseInt(index) + 1;
